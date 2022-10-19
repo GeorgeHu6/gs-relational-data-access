@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.sql.Types;
 
 @SpringBootApplication
 public class RelationalDataAccessApplication implements CommandLineRunner {
@@ -46,7 +47,7 @@ public class RelationalDataAccessApplication implements CommandLineRunner {
 
 		log.info("Querying for customer records where first_name = 'Josh':");
 		jdbcTemplate.query(
-				"SELECT id, first_name, last_name FROM customers WHERE first_name = ?", new Object[] { "Josh" },
+				"SELECT id, first_name, last_name FROM customers WHERE first_name = ?", new Object[] { "Josh" }, new int[] {Types.VARCHAR},
 				(rs, rowNum) -> new Customer(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"))
 		).forEach(customer -> log.info(customer.toString()));
 	}
